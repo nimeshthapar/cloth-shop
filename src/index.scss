@@ -12,3 +12,24 @@ code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
 		monospace;
 }
+
+.form-container {
+	display: flex;
+	width: 900px;
+	margin: 30px auto;
+	justify-content: space-between;
+}
+
+.sign-in-form-container,
+.sign-up-form-container {
+	width: 380px;
+	display: flex;
+	flex-direction: column;
+	h2 {
+		margin: 10px 0;
+	}
+	.form-actions {
+		display: flex;
+		align-items: center;
+	}
+}

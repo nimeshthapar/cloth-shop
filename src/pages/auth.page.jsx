@@ -1,20 +1,12 @@
 import React from 'react';
-import {
-	createUserDocHandler,
-	signInWithGooglePopup,
-} from '../util/firebase.util';
+import SignInForm from '../components/sign-in-form/sign-in-form';
+import SignUpForm from '../components/sign-up-form/sign-up-form';
 
 const Auth = () => {
-	const signInGoogleHandler = async () => {
-		const { user } = await signInWithGooglePopup();
-		const userDocRef = await createUserDocHandler(user);
-	};
 	return (
-		<div>
-			Auth
-			<button type="btn" onClick={signInGoogleHandler}>
-				Sign In With Google
-			</button>
+		<div className="form-container">
+			<SignInForm />
+			<SignUpForm />
 		</div>
 	);
 };
