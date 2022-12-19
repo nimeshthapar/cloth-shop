@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { ReactComponent as TshirtIcon } from '../../assets/shopping-bag.svg';
-import { ReactComponent as CartIcon } from '../../assets/shopping-cart.svg';
+import { ReactComponent as LogoIcon } from '../../assets/shopping-bag.svg';
+import CartIcon from '../cart-icon/cart-icon';
 import { UserContext } from '../../store/user-context';
 import { signOutUser } from '../../util/firebase.util';
 import './navigation.styles.scss';
+import CartDropdown from '../cart-dropdown/cart-dropdown';
 
 const Navigation = () => {
 	let activeStyle = {
@@ -13,13 +14,18 @@ const Navigation = () => {
 	};
 
 	const { user } = useContext(UserContext);
+	const [showCartDropDown, setShowCartDropDown] = useState(false);
+
+	const cartIconClickHandler = () => {
+		setShowCartDropDown((prev) => !prev);
+	};
 
 	return (
 		<>
 			<nav className="main-nav">
 				<span className="logo">
 					<NavLink to="/">
-						<TshirtIcon width={'3rem'} height={'3rem'} />
+						<LogoIcon width={'3rem'} height={'3rem'} />
 					</NavLink>
 				</span>
 				<ul className="nav-links">
@@ -49,18 +55,12 @@ const Navigation = () => {
 					) : (
 						<li onClick={signOutUser}>SIGN OUT</li>
 					)}
-					<li>
-						<NavLink
-							to="cart"
-							style={({ isActive }) =>
-								isActive ? activeStyle : undefined
-							}
-						>
-							<CartIcon width={'2rem'} height={'2rem'} />
-						</NavLink>
+					<li onClick={cartIconClickHandler}>
+						<CartIcon width={'2rem'} height={'2rem'} />
 					</li>
 				</ul>
 			</nav>
+			{showCartDropDown && <CartDropdown />}
 			<Outlet />
 		</>
 	);

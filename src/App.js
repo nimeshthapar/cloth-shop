@@ -1,12 +1,9 @@
-import {
-	createBrowserRouter,
-	redirect,
-	RouterProvider,
-} from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Navigation from './components/Navigation/navigation';
-import Auth from './pages/auth.page';
+import Auth from './pages/auth/auth.page';
 import ErrorPage from './pages/error-page/error.pages';
-import Home from './pages/home.page';
+import Home from './pages/home/home.page';
+import Shop from './pages/shop/shop.pages';
 import {
 	createUserWithEmailHandler,
 	createUserDocHandler,
@@ -68,7 +65,7 @@ const router = createBrowserRouter([
 			},
 			{
 				path: '/shop',
-				element: <h2>This is shop Page</h2>,
+				element: <Shop />,
 			},
 			{
 				path: '/auth',
