@@ -1,17 +1,11 @@
-import { Form, useNavigate } from 'react-router-dom';
-import {
-	createUserDocHandler,
-	signInWithGooglePopup,
-} from '../../util/firebase.util';
+import { Form } from 'react-router-dom';
+import { signInWithGooglePopup } from '../../util/firebase.util';
 import Button from '../button/button';
 import FormInput from '../form-input/form-input';
 
 const SignInForm = () => {
-	const navigate = useNavigate();
 	const signInGoogleHandler = async () => {
-		const { user } = await signInWithGooglePopup();
-		await createUserDocHandler(user);
-		navigate('/');
+		await signInWithGooglePopup();
 	};
 	return (
 		<div className="sign-in-form-container">

@@ -1,6 +1,11 @@
-import { createBrowserRouter, redirect } from 'react-router-dom';
+import {
+	createBrowserRouter,
+	redirect,
+	RouterProvider,
+} from 'react-router-dom';
 import Navigation from './components/Navigation/navigation';
 import Auth from './pages/auth.page';
+import ErrorPage from './pages/error-page/error.pages';
 import Home from './pages/home.page';
 import {
 	createUserWithEmailHandler,
@@ -21,23 +26,19 @@ const authActionHandler = async ({ request }) => {
 				data.email,
 				data.password
 			);
-			await createUserDocHandler(user, { displayName: data.displayName });
+			await createUserDocHandler(user, {
+				displayName: data.displayName,
+			});
 		} catch (err) {
 			if (err.code === 'auth/email-already-in-use') {
 				alert('User Already Exists');
 			} else {
 				console.log('Error Occured: ', err.message);
 			}
-			return null;
 		}
 	} else {
 		try {
-			const response = await signInWithEmailAndPasswordHandler(
-				data.email,
-				data.password
-			);
-
-			console.log(response);
+			await signInWithEmailAndPasswordHandler(data.email, data.password);
 		} catch (err) {
 			switch (err.code) {
 				case 'auth/wrong-password':
@@ -49,18 +50,17 @@ const authActionHandler = async ({ request }) => {
 				default:
 					console.log('Error Occured: ', err.message);
 			}
-			return null;
 		}
 	}
-	console.log('here');
 
-	return redirect('/');
+	return null;
 };
 
-export const router = createBrowserRouter([
+const router = createBrowserRouter([
 	{
 		path: '/',
 		element: <Navigation />,
+		errorElement: <ErrorPage />,
 		children: [
 			{
 				index: true,
@@ -82,3 +82,9 @@ export const router = createBrowserRouter([
 		],
 	},
 ]);
+
+const App = () => {
+	return <RouterProvider router={router} />;
+};
+
+export default App;
