@@ -1,6 +1,6 @@
 .cart-dropdown-container {
 	position: absolute;
-	width: 340px;
+	width: 280px;
 	height: 340px;
 	display: flex;
 	flex-direction: column;
@@ -14,6 +14,7 @@
 	.empty-message {
 		font-size: 18px;
 		margin: 50px auto;
+		color: darkgrey;
 	}
 
 	.cart-items {

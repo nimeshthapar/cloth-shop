@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Navigation from './components/Navigation/navigation';
 import Auth from './pages/auth/auth.page';
+import Checkout from './pages/checkout/checkout.pages';
 import ErrorPage from './pages/error-page/error.pages';
 import Home from './pages/home/home.page';
 import Shop from './pages/shop/shop.pages';
@@ -73,8 +74,8 @@ const router = createBrowserRouter([
 				action: authActionHandler,
 			},
 			{
-				path: '/cart',
-				element: <h2>This is cart Page</h2>,
+				path: '/checkout',
+				element: <Checkout />,
 			},
 		],
 	},
