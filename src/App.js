@@ -4,6 +4,7 @@ import Auth from './pages/auth/auth.page';
 import Checkout from './pages/checkout/checkout.pages';
 import ErrorPage from './pages/error-page/error.pages';
 import Home from './pages/home/home.page';
+import Category from './pages/shop-category/category.pages';
 import Shop from './pages/shop/shop.pages';
 import {
 	createUserWithEmailHandler,
@@ -65,8 +66,17 @@ const router = createBrowserRouter([
 				element: <Home />,
 			},
 			{
-				path: '/shop',
-				element: <Shop />,
+				path: '/shop/*',
+				children: [
+					{
+						index: true,
+						element: <Shop />,
+					},
+					{
+						path: ':category',
+						element: <Category />,
+					},
+				],
 			},
 			{
 				path: '/auth',

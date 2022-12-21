@@ -48,13 +48,15 @@ const CartProvider = ({ children }) => {
 	const [cartTotal, setCartTotal] = useState(0);
 
 	useEffect(() => {
-		setCartCount(cartItems.reduce((prev, curr) => prev + curr.quantity, 0));
-		setCartTotal(
-			cartItems.reduce(
-				(prev, curr) => prev + curr.price * curr.quantity,
-				0
-			)
+		const { cnt, price } = cartItems.reduce(
+			(prev, curr) => ({
+				cnt: prev.cnt + curr.quantity,
+				price: prev.price + curr.price * curr.quantity,
+			}),
+			{ cnt: 0, price: 0 }
 		);
+		setCartCount(cnt);
+		setCartTotal(price);
 	}, [cartItems]);
 
 	const addCartItem = (productAdd) => {

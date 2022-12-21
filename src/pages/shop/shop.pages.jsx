@@ -1,22 +1,22 @@
 import { useContext } from 'react';
-import ShopCard from '../../components/shop/shop-cards';
-import { ProductContext } from '../../store/products-context';
-import './shop.styles.scss';
+import CategoryPreview from '../../components/category-preview/category-preview';
+import { CategoriesContext } from '../../store/categories-context';
 
 const Shop = () => {
-	const { products } = useContext(ProductContext);
+	const { categories } = useContext(CategoriesContext);
 	return (
-		<div className="shop-container">
-			{products.map(({ id, imageUrl, name, price }) => (
-				<ShopCard
-					key={id}
-					id={id}
-					name={name}
-					imageUrl={imageUrl}
-					price={price}
-				/>
-			))}
-		</div>
+		<>
+			{Object.keys(categories).map((title) => {
+				const products = categories[title].slice(0, 4);
+				return (
+					<CategoryPreview
+						key={title}
+						products={products}
+						title={title}
+					/>
+				);
+			})}
+		</>
 	);
 };
 
