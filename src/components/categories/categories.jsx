@@ -1,14 +1,14 @@
-import './categories.styles.scss';
+import { CategoriesContainer } from './categories.styles.jsx';
 import categories from './categories-data';
 
 import CategoriesDetail from './categories-item';
 
 const Categories = () => (
-	<ul className="categories-container">
+	<CategoriesContainer>
 		{categories.map(({ id, name, src }) => (
 			<CategoriesDetail id={id} name={name} src={src} key={id} />
 		))}
-	</ul>
+	</CategoriesContainer>
 );
 
 export default Categories;

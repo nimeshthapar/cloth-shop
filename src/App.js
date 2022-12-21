@@ -66,6 +66,15 @@ const router = createBrowserRouter([
 				element: <Home />,
 			},
 			{
+				path: '/auth',
+				element: <Auth />,
+				action: authActionHandler,
+			},
+			{
+				path: '/checkout',
+				element: <Checkout />,
+			},
+			{
 				path: '/shop/*',
 				children: [
 					{
@@ -77,15 +86,6 @@ const router = createBrowserRouter([
 						element: <Category />,
 					},
 				],
-			},
-			{
-				path: '/auth',
-				element: <Auth />,
-				action: authActionHandler,
-			},
-			{
-				path: '/checkout',
-				element: <Checkout />,
 			},
 		],
 	},

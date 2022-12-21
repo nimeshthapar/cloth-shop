@@ -1,22 +1,24 @@
 import { useContext } from 'react';
-import './cart-icon.styles.scss';
+import {
+	CartIconContainer,
+	CartSvgComponent,
+	ItemCount,
+} from './cart-icon.styles';
 
-import { ReactComponent as ShoppingIcon } from '../../assets/shopping-cart.svg';
 import { CartContext } from '../../store/cart-context';
 
 const CartIcon = () => {
 	const { setShowCart, cartCount } = useContext(CartContext);
 
+	const handleShow = () => {
+		setShowCart((p) => !p);
+	};
+
 	return (
-		<div
-			className="cart-icon-container"
-			onClick={() => {
-				setShowCart((p) => !p);
-			}}
-		>
-			<ShoppingIcon className="shopping-icon" />
-			<span className="item-count">{cartCount}</span>
-		</div>
+		<CartIconContainer onClick={handleShow}>
+			<CartSvgComponent />
+			<ItemCount>{cartCount}</ItemCount>
+		</CartIconContainer>
 	);
 };
 

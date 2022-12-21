@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './form-input.styles.scss';
+import { FormInputLabel, Group, Input } from './form-input.styles';
 
 const FormInput = ({ label, inputdata }) => {
 	const [val, setVal] = useState('');
@@ -7,17 +7,10 @@ const FormInput = ({ label, inputdata }) => {
 		setVal(e.target.value);
 	};
 	return (
-		<div className="group">
-			<label className={`${val ? 'shrink' : ''} form-input-label`}>
-				{label}
-			</label>
-			<input
-				className="form-input"
-				{...inputdata}
-				onChange={changeHandler}
-				value={val}
-			/>
-		</div>
+		<Group>
+			<FormInputLabel shrink={val.length > 0}>{label}</FormInputLabel>
+			<Input {...inputdata} onChange={changeHandler} value={val} />
+		</Group>
 	);
 };
 

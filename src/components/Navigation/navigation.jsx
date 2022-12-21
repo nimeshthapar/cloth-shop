@@ -4,28 +4,29 @@ import { ReactComponent as LogoIcon } from '../../assets/shopping-bag.svg';
 import CartIcon from '../cart-icon/cart-icon';
 import { UserContext } from '../../store/user-context';
 import { signOutUser } from '../../util/firebase.util';
-import './navigation.styles.scss';
+import {
+	MainNavContainer,
+	LogoContainer,
+	NavLinksContainer,
+	NavLinkContainer,
+	activeStyle,
+} from './navigation.styles.jsx';
 import CartDropdown from '../cart-dropdown/cart-dropdown';
 import { CartContext } from '../../store/cart-context';
 const Navigation = () => {
-	let activeStyle = {
-		color: '#000',
-		textDecoration: 'underline',
-	};
-
 	const { user } = useContext(UserContext);
 	const { showCart } = useContext(CartContext);
 
 	return (
 		<>
-			<nav className="main-nav">
-				<span className="logo">
+			<MainNavContainer>
+				<LogoContainer>
 					<NavLink to="/">
 						<LogoIcon width={'3rem'} height={'3rem'} />
 					</NavLink>
-				</span>
-				<ul className="nav-links">
-					<li>
+				</LogoContainer>
+				<NavLinksContainer>
+					<NavLinkContainer>
 						<NavLink
 							to="shop"
 							style={({ isActive }) =>
@@ -34,9 +35,9 @@ const Navigation = () => {
 						>
 							SHOP
 						</NavLink>
-					</li>
+					</NavLinkContainer>
 					{user === null ? (
-						<li>
+						<NavLinkContainer>
 							{
 								<NavLink
 									to="auth"
@@ -47,15 +48,17 @@ const Navigation = () => {
 									SIGN IN
 								</NavLink>
 							}
-						</li>
+						</NavLinkContainer>
 					) : (
-						<li onClick={signOutUser}>SIGN OUT</li>
+						<NavLinkContainer onClick={signOutUser}>
+							SIGN OUT
+						</NavLinkContainer>
 					)}
-					<li>
+					<NavLinkContainer>
 						<CartIcon width={'2rem'} height={'2rem'} />
-					</li>
-				</ul>
-			</nav>
+					</NavLinkContainer>
+				</NavLinksContainer>
+			</MainNavContainer>
 			{showCart && <CartDropdown />}
 			<Outlet />
 		</>
