@@ -11,7 +11,7 @@ const CartIcon = () => {
 	const { setShowCart, cartCount } = useContext(CartContext);
 
 	const handleShow = () => {
-		setShowCart((p) => !p);
+		setShowCart();
 	};
 
 	return (
