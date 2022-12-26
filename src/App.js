@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Navigation from './components/Navigation/navigation';
 import Auth from './pages/auth/auth.page';
@@ -6,10 +8,14 @@ import ErrorPage from './pages/error-page/error.pages';
 import Home from './pages/home/home.page';
 import Category from './pages/shop-category/category.pages';
 import Shop from './pages/shop/shop.pages';
+import { setCategories } from './store/categories/categories.actions';
+import { setUser } from './store/user/user.actions';
 import {
+	onAuthListenerChange,
 	createUserWithEmailHandler,
 	createUserDocHandler,
 	signInWithEmailAndPasswordHandler,
+	getCategoriesAndDocs,
 } from './util/firebase.util';
 
 const authActionHandler = async ({ request }) => {
@@ -92,6 +98,27 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
+	const dispatch = useDispatch();
+	useEffect(() => {
+		const unsuscribe = onAuthListenerChange((user) => {
+			if (user) {
+				createUserDocHandler(user);
+			}
+			dispatch(setUser(user));
+		});
+
+		return unsuscribe;
+	}, [dispatch]);
+
+	useEffect(() => {
+		const fetchCategoriesAndDocs = async () => {
+			const categoryMap = await getCategoriesAndDocs();
+			dispatch(setCategories(categoryMap));
+		};
+
+		fetchCategoriesAndDocs();
+	}, [dispatch]);
+
 	return <RouterProvider router={router} />;
 };
 

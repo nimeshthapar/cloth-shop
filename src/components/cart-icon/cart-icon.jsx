@@ -1,18 +1,15 @@
-import { useContext } from 'react';
 import {
 	CartIconContainer,
 	CartSvgComponent,
 	ItemCount,
 } from './cart-icon.styles';
-
-import { CartContext } from '../../store/cart-context';
+import { useDispatch, useSelector } from 'react-redux';
+import { setShowCart } from '../../store/cart/cart.actions';
 
 const CartIcon = () => {
-	const { setShowCart, cartCount } = useContext(CartContext);
-
-	const handleShow = () => {
-		setShowCart();
-	};
+	const cartCount = useSelector((state) => state.cart.cartCount);
+	const dispatch = useDispatch();
+	const handleShow = () => dispatch(setShowCart());
 
 	return (
 		<CartIconContainer onClick={handleShow}>

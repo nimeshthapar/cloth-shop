@@ -1,8 +1,6 @@
-import React, { useContext } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { ReactComponent as LogoIcon } from '../../assets/shopping-bag.svg';
 import CartIcon from '../cart-icon/cart-icon';
-import { UserContext } from '../../store/user-context';
 import { signOutUser } from '../../util/firebase.util';
 import {
 	MainNavContainer,
@@ -12,10 +10,11 @@ import {
 	activeStyle,
 } from './navigation.styles.jsx';
 import CartDropdown from '../cart-dropdown/cart-dropdown';
-import { CartContext } from '../../store/cart-context';
+import { useSelector } from 'react-redux';
+
 const Navigation = () => {
-	const { user } = useContext(UserContext);
-	const { showCart } = useContext(CartContext);
+	const user = useSelector((state) => state.user.user);
+	const showCart = useSelector((state) => state.cart.showCart);
 
 	return (
 		<>

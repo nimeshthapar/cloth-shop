@@ -3,20 +3,18 @@ import ReactDOM from 'react-dom/client';
 import './index.scss';
 import reportWebVitals from './reportWebVitals';
 import App from './App';
-import UserProvider from './store/user-context';
-import CartProvider from './store/cart-context';
-import CategoriesProvider from './store/categories-context';
+import { Provider } from 'react-redux';
+import { store, persistor } from './store/store';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 	//<React.StrictMode>
-	<UserProvider>
-		<CategoriesProvider>
-			<CartProvider>
-				<App />
-			</CartProvider>
-		</CategoriesProvider>
-	</UserProvider>
+	<Provider store={store}>
+		<PersistGate persistor={persistor}>
+			<App />
+		</PersistGate>
+	</Provider>
 	//</React.StrictMode>
 );
 
