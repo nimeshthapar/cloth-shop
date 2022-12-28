@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import CheckoutItem from '../../components/checkout-items/checkout-items';
+import PaymentForm from '../../components/pzyment-form/payment-form';
 import {
 	CheckoutContainer,
 	CheckoutHeader,
@@ -23,6 +24,7 @@ const Checkout = () => {
 				<CheckoutItem key={item.id} item={item} />
 			))}
 			<Total>Total: ₹{cartTotal}</Total>
+			<PaymentForm />
 		</CheckoutContainer>
 	);
 };

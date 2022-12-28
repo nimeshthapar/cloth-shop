@@ -59,4 +59,13 @@ export const clearCartItem = (cartItems, productRemove) => ({
 	},
 });
 
+export const emptyCartItem = (cartItems, productRemove) => ({
+	type: CART_REDUCERS_TYPES.EMPTY_CART,
+	payload: {
+		cartItems: [],
+		cartCount: 0,
+		cartTotal: 0,
+	},
+});
+
 export const setShowCart = () => ({ type: CART_REDUCERS_TYPES.SET_SHOW_CART });

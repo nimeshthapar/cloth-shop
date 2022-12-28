@@ -19,6 +19,8 @@ export const cartReducer = (state = INITIAL_STATE, { type, payload }) => {
 			};
 		case CART_REDUCERS_TYPES.SET_SHOW_CART:
 			return { ...state, showCart: !state.showCart };
+		case CART_REDUCERS_TYPES.EMPTY_CART:
+			return { ...state, ...payload };
 		default:
 			return state;
 	}
