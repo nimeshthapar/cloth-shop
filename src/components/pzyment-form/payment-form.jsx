@@ -12,7 +12,7 @@ const PaymentForm = () => {
 	const stripe = useStripe();
 	const elements = useElements();
 	const [isLoading, setIsLoading] = useState(false);
-	const { displayName } = useSelector((state) => state.user.user);
+	const { user } = useSelector((state) => state.user);
 	const { cartTotal } = useSelector((state) => state.cart);
 	const dispatch = useDispatch();
 
@@ -32,7 +32,7 @@ const PaymentForm = () => {
 			payment_method: {
 				card: elements.getElement(CardElement),
 				billing_details: {
-					name: displayName ? displayName : 'Guest',
+					name: user ? user.displayName : 'Guest',
 				},
 			},
 		});
