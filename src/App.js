@@ -8,14 +8,13 @@ import ErrorPage from './pages/error-page/error.pages';
 import Home from './pages/home/home.page';
 import Category from './pages/shop-category/category.pages';
 import Shop from './pages/shop/shop.pages';
-import { setCategories } from './store/categories/categories.actions';
+import { fetchCategoriesStart } from './store/categories/categories.actions';
 import { setUser } from './store/user/user.actions';
 import {
 	onAuthListenerChange,
 	createUserWithEmailHandler,
 	createUserDocHandler,
 	signInWithEmailAndPasswordHandler,
-	getCategoriesAndDocs,
 } from './util/firebase.util';
 
 const authActionHandler = async ({ request }) => {
@@ -111,12 +110,7 @@ const App = () => {
 	}, [dispatch]);
 
 	useEffect(() => {
-		const fetchCategoriesAndDocs = async () => {
-			const categoryMap = await getCategoriesAndDocs();
-			dispatch(setCategories(categoryMap));
-		};
-
-		fetchCategoriesAndDocs();
+		dispatch(fetchCategoriesStart());
 	}, [dispatch]);
 
 	return <RouterProvider router={router} />;
