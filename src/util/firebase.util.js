@@ -84,7 +84,7 @@ export const createUserDocHandler = async (userData, config = {}) => {
 			console.log('There is error: ', err.message);
 		}
 	}
-	return userDocRef;
+	return userSnapshot;
 };
 
 export const createUserWithEmailHandler = async (email, password) => {
@@ -101,3 +101,15 @@ export const signOutUser = async () => await signOut(auth);
 
 export const onAuthListenerChange = (callback) =>
 	onAuthStateChanged(auth, callback);
+
+export const getCurrentUser = () =>
+	new Promise((resolve, reject) => {
+		const unsubscribe = onAuthStateChanged(
+			auth,
+			(user) => {
+				unsubscribe();
+				resolve(user);
+			},
+			reject
+		);
+	});

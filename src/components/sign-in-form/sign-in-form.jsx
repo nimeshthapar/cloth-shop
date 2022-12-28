@@ -1,12 +1,13 @@
+import { useDispatch } from 'react-redux';
 import { Form } from 'react-router-dom';
-import { signInWithGooglePopup } from '../../util/firebase.util';
+import { googleSignInStart } from '../../store/user/user.actions';
 import Button from '../button/button';
 import FormInput from '../form-input/form-input';
 
 const SignInForm = () => {
-	const signInGoogleHandler = async () => {
-		await signInWithGooglePopup();
-	};
+	const dispatch = useDispatch();
+	const signInGoogleHandler = () => dispatch(googleSignInStart());
+
 	return (
 		<div className="sign-in-form-container">
 			<h2>Already have an Account?</h2>

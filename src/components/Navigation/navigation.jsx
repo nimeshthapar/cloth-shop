@@ -1,7 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import { ReactComponent as LogoIcon } from '../../assets/shopping-bag.svg';
 import CartIcon from '../cart-icon/cart-icon';
-import { signOutUser } from '../../util/firebase.util';
 import {
 	MainNavContainer,
 	LogoContainer,
@@ -10,11 +9,13 @@ import {
 	activeStyle,
 } from './navigation.styles.jsx';
 import CartDropdown from '../cart-dropdown/cart-dropdown';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { signOutStart } from '../../store/user/user.actions';
 
 const Navigation = () => {
 	const user = useSelector((state) => state.user.user);
 	const showCart = useSelector((state) => state.cart.showCart);
+	const dispatch = useDispatch();
 
 	return (
 		<>
@@ -49,7 +50,9 @@ const Navigation = () => {
 							}
 						</NavLinkContainer>
 					) : (
-						<NavLinkContainer onClick={signOutUser}>
+						<NavLinkContainer
+							onClick={() => dispatch(signOutStart())}
+						>
 							SIGN OUT
 						</NavLinkContainer>
 					)}

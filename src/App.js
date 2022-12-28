@@ -1,6 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import {
+	createBrowserRouter,
+	redirect,
+	RouterProvider,
+} from 'react-router-dom';
 import Navigation from './components/Navigation/navigation';
 import Auth from './pages/auth/auth.page';
 import Checkout from './pages/checkout/checkout.pages';
@@ -9,104 +13,92 @@ import Home from './pages/home/home.page';
 import Category from './pages/shop-category/category.pages';
 import Shop from './pages/shop/shop.pages';
 import { fetchCategoriesStart } from './store/categories/categories.actions';
-import { setUser } from './store/user/user.actions';
 import {
-	onAuthListenerChange,
-	createUserWithEmailHandler,
-	createUserDocHandler,
-	signInWithEmailAndPasswordHandler,
-} from './util/firebase.util';
-
-const authActionHandler = async ({ request }) => {
-	const data = Object.fromEntries(await request.formData());
-	if ('displayName' in data) {
-		if (data.password !== data.confirmPassword) {
-			alert("Password Doesn't Match");
-			return null;
-		}
-
-		try {
-			const { user } = await createUserWithEmailHandler(
-				data.email,
-				data.password
-			);
-			await createUserDocHandler(user, {
-				displayName: data.displayName,
-			});
-		} catch (err) {
-			if (err.code === 'auth/email-already-in-use') {
-				alert('User Already Exists');
-			} else {
-				console.log('Error Occured: ', err.message);
-			}
-		}
-	} else {
-		try {
-			await signInWithEmailAndPasswordHandler(data.email, data.password);
-		} catch (err) {
-			switch (err.code) {
-				case 'auth/wrong-password':
-					alert('Incorrect Password');
-					break;
-				case 'auth/user-not-found':
-					alert('No User Found!');
-					break;
-				default:
-					console.log('Error Occured: ', err.message);
-			}
-		}
-	}
-
-	return null;
-};
-
-const router = createBrowserRouter([
-	{
-		path: '/',
-		element: <Navigation />,
-		errorElement: <ErrorPage />,
-		children: [
-			{
-				index: true,
-				element: <Home />,
-			},
-			{
-				path: '/auth',
-				element: <Auth />,
-				action: authActionHandler,
-			},
-			{
-				path: '/checkout',
-				element: <Checkout />,
-			},
-			{
-				path: '/shop/*',
-				children: [
-					{
-						index: true,
-						element: <Shop />,
-					},
-					{
-						path: ':category',
-						element: <Category />,
-					},
-				],
-			},
-		],
-	},
-]);
+	checkUser,
+	emailSignInStart,
+	signUpStart,
+} from './store/user/user.actions';
 
 const App = () => {
 	const dispatch = useDispatch();
-	useEffect(() => {
-		const unsuscribe = onAuthListenerChange((user) => {
-			if (user) {
-				createUserDocHandler(user);
-			}
-			dispatch(setUser(user));
-		});
 
-		return unsuscribe;
+	const authActionHandler = async ({ request }) => {
+		const data = Object.fromEntries(await request.formData());
+		if ('displayName' in data) {
+			if (data.password !== data.confirmPassword) {
+				alert("Password Doesn't Match");
+				return null;
+			}
+
+			try {
+				dispatch(
+					signUpStart(data.email, data.password, data.displayName)
+				);
+			} catch (err) {
+				if (err.code === 'auth/email-already-in-use') {
+					alert('User Already Exists');
+				} else {
+					console.log('Error Occured: ', err.message);
+				}
+			}
+		} else {
+			try {
+				dispatch(emailSignInStart(data.email, data.password));
+			} catch (err) {
+				switch (err.code) {
+					case 'auth/wrong-password':
+						alert('Incorrect Password');
+						break;
+					case 'auth/user-not-found':
+						alert('No User Found!');
+						break;
+					default:
+						console.log('Error Occured: ', err.message);
+				}
+			}
+		}
+
+		return redirect('/');
+	};
+
+	const router = createBrowserRouter([
+		{
+			path: '/',
+			element: <Navigation />,
+			errorElement: <ErrorPage />,
+			children: [
+				{
+					index: true,
+					element: <Home />,
+				},
+				{
+					path: '/auth',
+					element: <Auth />,
+					action: authActionHandler,
+				},
+				{
+					path: '/checkout',
+					element: <Checkout />,
+				},
+				{
+					path: '/shop/*',
+					children: [
+						{
+							index: true,
+							element: <Shop />,
+						},
+						{
+							path: ':category',
+							element: <Category />,
+						},
+					],
+				},
+			],
+		},
+	]);
+
+	useEffect(() => {
+		dispatch(checkUser());
 	}, [dispatch]);
 
 	useEffect(() => {
